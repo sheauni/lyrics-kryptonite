@@ -1,68 +1,52 @@
 # -*- coding: utf-8 -*-
 import jieba
 import re
+import string
+
+
+punc = "ㄅㄆㄇㄈㄉㄊㄋㄌㄍㄎㄏˇˋㄐㄑㄒㄓㄔㄕㄖˊㄗㄘㄙ˙ㄧㄨㄩㄚㄛㄜㄝㄞㄟㄠㄡㄢㄣㄤㄥㄦ\￣︶㊣．€↑↓↘↖↗↙→┴└┌♡《□■╬﹕。┘╭╮─▃▄▅▆▇█▉▊\╩╔╥◢◣●○ο◆◇﹉☆★〉〈﹒°∴◎⊙※║══１２３４５６７８９０ａｂｃｄｅｆｇｈｉｊｋｌｍｎｏｐｑｒｓｔｕｖｗｘｙｚＱＷＥＲＴＹＵＩＯＰＬＫＪＨＧＦＤＳＡＺＸＣＶＢＮＭ0123456789！？｡＂＃＄％＆＇（）＊＋，－／：；＜＝＞＠［＼］＾＿｀｛｜｝～｟｠｢｣､、〃》「」『』【】〔〕〖〗〘〙〚〛〜〝〞〟〰〾〿–—‘’‛“”„‟…‧﹏.!!#$%&\'()*+,-./:;<=>?@[\\]^_`{|}~"
+punc = punc.decode("utf-8")
 
 jieba.set_dictionary('/Library/Python/2.6/site-packages/jieba/dict.txt.big.txt')
+www = open('/Users/Nini/Desktop/schoolproject/LyricsFile22124/s2.txt', 'w')
 
-f=open('/Users/Nini/Desktop/schoolproject/LyricsFile22124/12345.txt','r')
-www=open('/Users/Nini/Desktop/schoolproject/LyricsFile22124/s2.txt','w')
 
-data=f.readlines()
-www.write('<p> ')
-for line in data:
-    line = line.replace("　", " ")
-    line=line.strip(' ')
-    if line[0]=='\n':
-        www.write('</p> <p> ')
-    elif re.search('[a-zA-z]',line) is not None:
-        line = jieba.cut(line)
-        line = filter(lambda x: not x.isspace(), line)
-        www.write(('<l> <s> ' + u" ".join(line) + " </s> <\l> ").encode('utf-8'))
-    else:
-        www.write('<l> ')
-        print line
-        line=line.decode('utf-8')
-        for sentence in line.split():
-            # www.write(word)
-            str = u" ".join(jieba.cut(sentence))
-            # print str
-            www.write(('<s> ' + str + " </s> ").encode('utf-8'))
-        www.write('</l> ')
-www.write('</p>\n')
+def main():
+    with open("/Users/Nini/Desktop/schoolproject/LyricsFile22124/LyricsFile/0list.txt",'r') as lyrics:
+        for filename in lyrics.readlines():
+            run(filename[:-2])
+            print filename[:-2]
 
-'''
-import linecache
-
-for yee in range(22125) :
-    if yee == 0 :
-        continue
-    be=linecache.getline('/Users/Nini/Desktop/schoolproject/LyricsFile22124/LyricsFile/0list.txt',yee)
-    af=linecache.getline('/Users/Nini/Desktop/schoolproject/1011_1000/format/0_1011_1000_flist.txt',yee)
-    #print be
-    #print af
-    bef = be[0:len(be) - 1]
-    aft = af[0:len(af) - 1]
-    #print aft
-    print bef
-    f = open(bef, 'r')
-    www = open(aft, 'w')
-
+def run( input ):
+    f = open(input, 'r')
     data = f.readlines()
+    www.write('<p> ')
+    pre_empty=0
     for line in data:
-        line = line.replace("　", " ")
-
-        if line[0] == '\n':
-            www.write('#')
+        line = re.sub(ur"[%s]+" % punc, "", line.decode("utf-8"))
+        print line
+        line = line.strip(' ')
+        if len(line) == 0:
+            if pre_empty==0:
+                pre_empty=1
+                www.write('</p> <p> ')
+        elif re.search('[a-zA-z]', line) is not None:
+            pre_empty=0
+            line = jieba.cut(line)
+            line = filter(lambda x: not x.isspace(), line)
+            www.write(('<l> <s> ' + u" ".join(line) + " </s> <\l> ").encode('utf-8'))
         else:
-            www.write('<')
-            print line
-            line.decode('utf-8')
-            for word in line:
-                if word.isspace():
-                    www.write('/')
-                elif word != '\n':
-                    www.write(word)
-            www.write('>')
-'''
+            pre_empty=0
+            www.write('<l> ')
+            # print line
+            # line = line.decode('utf-8')
+            for sentence in line.split():
+                # www.write(word)
+                str = u" ".join(jieba.cut(sentence))
+                # print str
+                www.write(('<s> ' + str + " </s> ").encode('utf-8'))
+            www.write('</l> ')
+    www.write('</p>\n')
 
-#re.search('[a-zA-z]',line)
+if __name__ == '__main__':
+    main()
