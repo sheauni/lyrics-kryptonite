@@ -13,7 +13,7 @@ punc = punc.decode("utf-8")
 
 jieba.set_dictionary('/Library/Python/2.6/site-packages/jieba/dict.txt.big.txt')
 
-d2v_model = gensim.models.doc2vec.Doc2Vec.load('/Users/Nini/Desktop/schoolproject/LyricsFile22124/one_thousand.vec')
+d2v_model = gensim.models.doc2vec.Doc2Vec.load('/Users/Nini/Desktop/schoolproject/LyricsFile22124/model_2.vec')
 biggest=0
 song=0
 
@@ -41,13 +41,14 @@ else:
     www.write('</l> ')
 www.close()
 
+f=open('/Users/Nini/Desktop/schoolproject/LyricsFile22124/say.txt','r')
 
-inputvec = d2v_model.infer_vector(['/Users/Nini/Desktop/schoolproject/LyricsFile22124/say.txt'])
+inputvec = d2v_model.infer_vector(f)
 
 for i in range(0,1000):
     docvec = d2v[i]
     inner=0
-    for j in range(0,100):
+    for j in range(0,300):
         k=inputvec[j]*docvec[j]
         inner+=k
     if inner>biggest:
