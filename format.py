@@ -7,14 +7,16 @@ punc = "ㄅㄆㄇㄈㄉㄊㄋㄌㄍㄎㄏˇˋㄐㄑㄒㄓㄔㄕㄖˊㄗㄘㄙ˙�
 punc = punc.decode("utf-8")
 
 jieba.set_dictionary('/Library/Python/2.6/site-packages/jieba/dict.txt.big.txt')
-www = open('/Users/Nini/Desktop/schoolproject/LyricsFile22124/s2.txt', 'w')
+www = open('/Users/Nini/Desktop/schoolproject/1206_lyrics_file/correct_format.txt', 'w')
 
 
 def main():
-    with open("/Users/Nini/Desktop/schoolproject/LyricsFile22124/LyricsFile/0list.txt",'r') as lyrics:
+    '''with open("/Users/Nini/Desktop/schoolproject/LyricsFile22124/LyricsFile/0list.txt",'r') as lyrics:
         for filename in lyrics.readlines():
             run(filename[:-2])
-            print filename[:-2]
+            print filename[:-2]'''
+    for i in range(1,59263):
+        run('/Users/Nini/Desktop/schoolproject/1206_lyrics_file/GarbageRemoved/'+str(i)+'.txt')
 
 def run( input ):
     f = open(input, 'r')
