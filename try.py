@@ -13,7 +13,7 @@ punc = punc.decode("utf-8")
 
 jieba.set_dictionary('/Library/Python/2.6/site-packages/jieba/dict.txt.big.txt')
 
-d2v_model = gensim.models.doc2vec.Doc2Vec.load('/Users/Nini/Desktop/schoolproject/LyricsFile22124/model_2.vec')
+d2v_model = gensim.models.doc2vec.Doc2Vec.load('/Users/Nini/Desktop/schoolproject/1206_lyrics_file/model/20171220.vec')
 biggest=0
 song=0
 
@@ -45,7 +45,7 @@ f=open('/Users/Nini/Desktop/schoolproject/LyricsFile22124/say.txt','r')
 
 inputvec = d2v_model.infer_vector(f)
 
-for i in range(0,1000):
+for i in range(0,59262):
     docvec = d2v[i]
     inner=0
     for j in range(0,300):
@@ -56,7 +56,7 @@ for i in range(0,1000):
         song=i+1
 print str(biggest)+'\n'
 print str(song)+'\n'
-mostsimilar=open('/Users/Nini/Desktop/schoolproject/LyricsFile22124/LyricsFile/'+str(song)+'.txt','r').readlines()
+mostsimilar=open('/Users/Nini/Desktop/schoolproject/1206_lyrics_file/GarbageRemoved/'+str(song)+'.txt','r').readlines()
 for line in mostsimilar:
     print line
 print d2v_model.docvecs[song-1]

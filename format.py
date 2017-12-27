@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
-import jieba
-import re
-
+import jieba     #分詞
+import re        #用於清除標點
 
 punc = "ㄅㄆㄇㄈㄉㄊㄋㄌㄍㄎㄏˇˋㄐㄑㄒㄓㄔㄕㄖˊㄗㄘㄙ˙ㄧㄨㄩㄚㄛㄜㄝㄞㄟㄠㄡㄢㄣㄤㄥㄦ\￣︶▽ρ┬σ㊣．€↑↓↘↖↗↙→┴└┌♡《□■╬﹕。┘╭╮─▃▄▅▆▇█▉▊\╩╔╥◢◣●○οO◆◇﹉☆★〉〈﹒°∴◎⊙※║══１２３４５６７８９０ａｂｃｄｅｆｇｈｉｊｋｌｍｎｏｐｑｒｓｔｕｖｗｘｙｚＱＷＥＲＴＹＵＩＯＰＬＫＪＨＧＦＤＳＡＺＸＣＶＢＮＭ0123456789！？｡＂＃＄％＆＇（）＊＋，－／：；＜＝＞＠［＼］＾＿｀｛｜｝～｟｠｢｣､、〃》「」『』【】〔〕〖〗〘〙〚〛〜〝〞〟〰〾〿–—‘’‛“”„‟…‧﹏.!!#$%&\'()*+,-./:;<=>?@[\\]^_`{|}~"
 punc = punc.decode("utf-8")
@@ -11,10 +10,10 @@ www = open('/Users/Nini/Desktop/schoolproject/1206_lyrics_file/correct_format.tx
 
 
 def main():
-    '''with open("/Users/Nini/Desktop/schoolproject/LyricsFile22124/LyricsFile/0list.txt",'r') as lyrics:
-        for filename in lyrics.readlines():
-            run(filename[:-2])
-            print filename[:-2]'''
+    #    with open("/Users/Nini/Desktop/schoolproject/LyricsFile22124/LyricsFile/0list.txt",'r') as lyrics:
+    #        for filename in lyrics.readlines():
+    #            run(filename[:-2])
+    #            print filename[:-2]
     for i in range(1,59263):
         run('/Users/Nini/Desktop/schoolproject/1206_lyrics_file/GarbageRemoved/'+str(i)+'.txt')
 
@@ -22,12 +21,15 @@ def run( input ):
     f = open(input, 'r')
     data = f.readlines()
     www.write('<p> ')
+    #前一行為空白
     pre_empty=0
     for line in data:
+        #去除標點
         line = re.sub(ur"[%s]+" % punc, "", line.decode("utf-8"))
         print line
+        #將前後空白符去除
         line = line.strip(' ')
-        if len(line) == 0:
+        if len(line)==0:
             if pre_empty==0:
                 pre_empty=1
                 www.write('</p> <p> ')
@@ -39,12 +41,8 @@ def run( input ):
         else:
             pre_empty=0
             www.write('<l> ')
-            # print line
-            # line = line.decode('utf-8')
             for sentence in line.split():
-                # www.write(word)
                 str = u" ".join(jieba.cut(sentence))
-                # print str
                 www.write(('<s> ' + str + " </s> ").encode('utf-8'))
             www.write('</l> ')
     www.write('</p>\n')
