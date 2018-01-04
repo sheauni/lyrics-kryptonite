@@ -47,10 +47,12 @@ inputvec = d2v_model.infer_vector(f)
 
 for i in range(0,59262):
     docvec = d2v[i]
-    inner=0
+    '''
     for j in range(0,300):
         k=inputvec[j]*docvec[j]
         inner+=k
+    '''
+    inner = inputvec.dot(docvec)
     if inner>biggest:
         biggest=inner
         song=i+1
