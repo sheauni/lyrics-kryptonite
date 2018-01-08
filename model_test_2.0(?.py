@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-
+import codecs
 
 import numpy as np
 import re
@@ -57,6 +57,7 @@ def predict(d2v_model, line):
                     norm='max', axis=1, copy=True, return_norm=False)
 
     input = '<p> '
+    print line
     line = re.sub(ur"[%s]+" % punc, "", line.decode("utf-8"))
     print line
 
@@ -93,7 +94,7 @@ def predict(d2v_model, line):
 
 
 def predict_many(model):
-    with open(USER_INPUTS, 'r') as file:
+    with codecs.open(USER_INPUTS,'r',encoding='utf8') as file:  #open(USER_INPUTS, 'r')
         for line in file.readlines():
             predict(model, line)
 
