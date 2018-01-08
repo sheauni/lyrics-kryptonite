@@ -1,0 +1,76 @@
+﻿{% load staticfiles %}
+
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>good morning!!</title>
+        <style>
+            body {
+               background-color: gold;
+            }
+            em {
+                color: LightSeaGreen;
+            }
+        </style>
+    </head>
+    <body background="https://images.pottermore.com/bxd3o8b291gf/2phT56DSucuUqU6Icm6mCe/b1fd2811691e41ffd1622a07eb528604/HogwartsCastle_WB_F4_HogwartsThroughTheTrees_Illust_100615_Land.jpg?w=1200">
+       <div class="header">
+           <h1 class="site-title text-center">
+               <center><em><a href="/"><font color="silver">~歌詞推薦系統~</font></a></em></center>
+           </h1>
+       </div>
+       <div class="container">
+       <!--<font color="white><h1></font></h1>-->
+       <!--    <strong><font size="4" color="purple">it's such a good day</font></strong>                      var Submit=function()-->
+           <br>
+        <!--<font face="wingdings"  color="silver">ABCDEFGHIJK</font>
+        <font color="silver">ABCDEFGHIJK</font>-->
+           <br>
+           <form action="/go" method="post">
+               {% csrf_token %}
+               <font  color="silver">請輸入你的心情 :</font>
+               <br>
+               <textarea cols=60 rows=6 name="text"></textarea>
+               <br>
+               <input type="submit" name="SB" value="確定">
+           </form>
+
+           <p style="color:white;">{{ num }}</p>
+           <br>
+           <p style=" color:white; charset=utf-8 ">{{ rlt | linebreaksbr }}</p>
+           <br>
+           <em>{{ current_time }}</em>
+           <br>
+           <br>
+       </div>
+
+
+       <font  color="silver"><strong>comment</strong></font>
+
+       <form action="https://script.google.com/macros/s/AKfycbyYpOUErauHuIUwnIDnLZuLGeES_ajsHGxEuh_vQJoN2e63-TgN/exec" method="post" target="hidden_iframe">
+           <fieldset>
+               <font  color="silver">Satisfied? &nbsp &nbsp &nbsp Yes &nbsp No</font>
+               <br>
+               &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
+               <input id="op1" type="radio" value="Yes" name="qs1" />&nbsp&nbsp
+               <input id="op2" type="radio" value="No" name="qs1" />
+           </fieldset>
+
+           <fieldset>
+               <font  color="silver"><label>Respond</label></font>
+               <textarea id="feed" name="feed"></textarea>
+           </fieldset>
+
+
+           <input type="submit" value="send" />
+
+       </form>
+
+       <br /><br />
+       <font color="silver"> The <a href="https://docs.google.com/spreadsheets/d/1NQea73IHOrH1moY25vYmYhFtSnKpK9Bo3B0jukDHeuc/edit#gid=0">Result</a>
+           takes few minutes to be shown, but it is sent to the google sheet instantaneously.</font>
+       <br /><br />
+
+    </body>
+</html>
+
