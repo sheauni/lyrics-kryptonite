@@ -1,6 +1,6 @@
+# encoding=utf8
 # -*- coding: utf-8 -*-
 import codecs
-
 import numpy as np
 import re
 import jieba
@@ -8,20 +8,20 @@ from gensim.models.doc2vec import TaggedLineDocument, Doc2Vec
 import argparse
 from sklearn.preprocessing import normalize
 
-
+result = open('/Users/Nini/Desktop/schoolproject/0123_result.txt','w')
 LYRIC = "/Users/Nini/Desktop/schoolproject/1206_lyrics_file/correct_format.txt"
 LYRIC_DIR = '/Users/Nini/Desktop/schoolproject/'\
             '1206_lyrics_file/GarbageRemoved/'
 USER_INPUTS = "/Users/Nini/Desktop/schoolproject/1011_1000/lyrics-kryptonite/user_emotion.txt"
 N_SONG = 59262
 
-punc = """ㄅㄆㄇㄈㄉㄊㄋㄌㄍㄎㄏˇˋㄐㄑㄒㄓㄔㄕㄖˊㄗㄘㄙ˙ㄧㄨㄩㄚㄛㄜㄝㄞㄟㄠㄡㄢ
+punc = {ord(c): ord(" ") for c in u"""ㄅㄆㄇㄈㄉㄊㄋㄌㄍㄎㄏˇˋㄐㄑㄒㄓㄔㄕㄖˊㄗㄘㄙ˙ㄧㄨㄩㄚㄛㄜㄝㄞㄟㄠㄡㄢ
         ㄣㄤㄥㄦ\￣︶▽ρ┬σ㊣．€↑↓↘↖↗↙→┴└┌♡《□■╬﹕。┘╭╮─▃▄▅▆▇█▉▊\╩╔╥◢◣●○οO◆◇﹉☆★〉
         〈﹒°∴◎⊙※║══１２３４５６７８９０ａｂｃｄｅｆｇｈｉｊｋｌｍｎｏｐｑｒｓｔ
         ｕｖｗｘｙｚＱＷＥＲＴＹＵＩＯＰＬＫＪＨＧＦＤＳＡＺＸＣＶＢＮＭ01234567
         89！？｡＂＃＄％＆＇（）＊＋，－／：；＜＝＞＠［＼］＾＿｀｛｜｝～｟｠｢｣､
         、〃》「」『』【】〔〕〖〗〘〙〚〛〜〝〞〟〰〾〿–—‘’‛“”„‟…‧﹏.!!#$%&\'()*
-        +,-./:;<=>?@[\\]^_`{|}~""`]"""
+        +,-./:;<=>?@[\\]^_`{|}~""`]"""}
 
 
 def parse_args():
@@ -42,24 +42,25 @@ def parse_args():
 
     return parser.parse_args()
 
-
 def train(args):
     documents = TaggedLineDocument(LYRIC)
     return Doc2Vec(documents, size=args.size, window=args.window,
                    min_count=args.min_count, workers=args.workers, dm=args.dm)
 
 
-def predict(d2v_model, line):
+def predict(d2v_model, d2v, line):
     biggest = 0
     song = 0
 
-    d2v = normalize(np.array(d2v_model.docvecs),
-                    norm='max', axis=1, copy=True, return_norm=False)
 
     input = '<p> '
     print line
-    line = re.sub(ur"[%s]+" % punc, "", line.decode("utf-8"))
+    #line.encode("utf-8")
+    #line = unicode(line, 'utf8')
+    #line = re.sub(ur"[%s]+" % punc, "", line)
+    line = line.translate(punc)
     print line
+    result.write(line.encode('utf-8'))
 
     line = line.strip(' ')
     if re.search('[a-zA-z]', line) is not None:
@@ -78,6 +79,7 @@ def predict(d2v_model, line):
         input += ('</l> ')
 
     inputvec = d2v_model.infer_vector(input)
+    print inputvec
 
     for i in range(0, N_SONG):
         docvec = d2v[i]
@@ -86,17 +88,25 @@ def predict(d2v_model, line):
             biggest = inner
             song = i + 1
     print str(biggest) + '\n'
+    result.write(str(biggest).encode('utf-8'))
     print str(song) + '\n'
+    result.write(str(song).encode('utf-8')+'\n'.encode('utf-8'))
     mostsimilar = open(LYRIC_DIR + str(song) + '.txt', 'r').readlines()
     for line in mostsimilar:
         print line
-    print d2v_model.docvecs[song - 1]
+        result.write(line)
+    v = d2v_model.docvecs[song - 1]
+    #print v
+    result.write(v)
+    result.write('\n\n'.encode('utf-8'))
 
 
 def predict_many(model):
-    with codecs.open(USER_INPUTS,'r',encoding='utf8') as file:  #open(USER_INPUTS, 'r')
+    d2v = normalize(np.array(model.docvecs), norm='max', axis=1, copy=True, return_norm=False)
+    with codecs.open(USER_INPUTS,'r',encoding='utf-8') as file:  #open(USER_INPUTS, 'r')
         for line in file.readlines():
-            predict(model, line)
+            #line = unicode(line, 'utf8')
+            predict(model,d2v , line)
 
 
 if __name__ == '__main__':

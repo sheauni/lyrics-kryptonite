@@ -42,7 +42,7 @@ else:
 www.close()
 
 f=open('/Users/Nini/Desktop/schoolproject/LyricsFile22124/say.txt','r')
-
+print d2v_model.docvecs.most_similar(f)
 inputvec = d2v_model.infer_vector(f)
 
 for i in range(0,59262):
