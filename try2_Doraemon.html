@@ -1,0 +1,133 @@
+﻿<!DOCTYPE html>
+
+<!--{% load staticfiles %} #http://img.juimg.com/tuku/yulantu/130517/234612-13051FS13816.jpg-->
+<html>
+    <head>
+        <title>Lyrics!!!</title>
+        <style>
+            body {
+               background-image:url("http://goldwallpapers.com/uploads/posts/wood-wallpaper-1920x1080/wood_wallpaper_1920x1080_016.jpg");
+               background-color: black;
+               background-position:50% 0%;
+               background-repeat:no-repeat;
+               background-attachment:fixed;
+               background-size:cover;
+            }
+            em {
+                color: LightSeaGreen;
+            }
+        </style>
+    </head>
+    <body margin:0px; padding:0px;>
+       <div class="header">
+           <h1 class="site-title text-center">
+               <center><em><a href="/try2"><font color="white">~歌詞推薦系統~</font></a></em></center>
+           </h1>
+       </div>
+       <div class="container">
+       <!--<font color="white><h1></font></h1>-->
+       <!--    <strong><font size="4" color="purple">it's such a good day</font></strong>                      var Submit=function()-->
+           <br>
+        <!--<font face="wingdings"  color="silver">ABCDEFGHIJK</font>
+        <font color="silver">ABCDEFGHIJK</font>-->
+           <br>
+           <form action="/go" method="post">
+               {% csrf_token %}
+               <font  color="white">請輸入你的心情 :</font>
+               <br>
+               <textarea cols=60 rows=6 name="text" id="userInput">{{ input }}</textarea>
+               <br>
+               <input type="submit" name="SB" value="獲得推薦歌曲">
+           </form>
+           <p><img src="https://sdl-stickershop.line.naver.jp/stickershop/v1/sticker/2905350/android/sticker.png" style=" position:absolute; width:400px; height:400px; top:150px; left:600px; "></p>
+           <p style="color:#4dd2ff;">{{ num }}</p>
+           <br>
+           <p id="lyrics" style=" color:#4dd2ff; charset=utf-8 "><b>{{ rlt | linebreaksbr }}</b></p>
+           <br>
+           <br>
+       </div>
+
+
+       <!--<fieldset style="width:40px; background:silver"><font  color="#4dd2ff"><strong>回覆</strong></font></fieldset>-->
+
+       <br>
+       <form id="feedbackForm">
+           <fieldset style="width:300px; border-color: white; border-width: 1px; ">
+              <table>
+                  <tbody>
+                    <tr>
+                        <th>
+                            <font color="#4dd2ff">滿意嗎？</font>
+                        </th>
+                        <th>1</th>
+                        <th>2</th>
+                        <th>3</th>
+                        <th>4</th>
+                        <th>5</th>
+                    </tr>
+                    <tr>
+                        <th>&nbsp</th>
+                        <th><input id="op1" type="radio" value="1" name="qs"></th>
+                        <th><input id="op2" type="radio" value="2" name="qs"></th>
+                        <th><input id="op3" type="radio" value="3" name="qs"></th>
+                        <th><input id="op4" type="radio" value="4" name="qs"></th>
+                        <th><input id="op5" type="radio" value="5" name="qs"></th>
+                    </tr>
+                  </tbody>
+              </table>
+               <table>
+                   <tbody>
+                        <th>
+                            <font  color="#4dd2ff"><label>其他意見</label></font>
+                        </th>
+                   </tbody>
+               </table>
+               <textarea id="feed"  name="feed" style=" width:300px; height:70px;"></textarea>
+           </fieldset>
+
+           <button type="submit" id="submitButton">傳送</button>
+
+       </form>
+
+       <br /><br />
+       <font color="#4dd2ff"> 前往<a href="https://docs.google.com/spreadsheets/d/1NQea73IHOrH1moY25vYmYhFtSnKpK9Bo3B0jukDHeuc/edit#gid=0">回饋整理</a></font>
+       <br /><br />
+       <script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+       <script>
+            $('#submitButton').click( function(e) {
+                e.preventDefault();
+                console.log('hii');
+                let checked = -1;
+                for( let i = 1; i <= 5; i++)
+                {
+                    if($('input[id=op'+i+']:checked').val())
+                    {
+                        checked = i;
+                        break;
+                    }
+                }
+                $.ajax({
+                    url: 'https://script.google.com/macros/s/AKfycbyYpOUErauHuIUwnIDnLZuLGeES_ajsHGxEuh_vQJoN2e63-TgN/exec',
+                    type: 'post',
+                    dataType: 'json',
+                    data: {
+                        'feed': $('#feed').val(),
+                        'satisfied': checked,
+                        'input': $('#userInput').val(),
+                        'lyrics': $('#lyrics').html(),
+                    },
+                    success: function(data) {
+                        alert('回覆成功~')
+                        console.log('receive data:', data);
+                    }
+                }).fail(function() {
+                    alert('回覆失敗 QAQ')
+                    console.log('Fail');
+                });
+            });
+       </script>
+
+    <br><em>{{ current_time }}</em>
+    </body>
+</html>
+
