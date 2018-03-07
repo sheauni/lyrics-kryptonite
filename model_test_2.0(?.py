@@ -28,13 +28,13 @@ def parse_args():
     parser = argparse.ArgumentParser(description='Lyric hyper-parameter tuner')
     parser.add_argument('-s', '--size', type=int, default=300,
                         help='dimensionality of the feature vectors')
-    parser.add_argument('-w', '--window', type=int, default=5,
+    parser.add_argument('-w', '--window', type=int, default=10,
                         help='maximum distance between the current and '
                         'predicted word within a sentence')
-    parser.add_argument('--min-count', type=int, default=5,
+    parser.add_argument('--min-count', type=int, default=1,
                         help='ignore all words with total frequency '
                         'lower than this')
-    parser.add_argument('--workers', type=int, default=3,
+    parser.add_argument('--workers', type=int, default=4,
                         help='threads to train model (fast)')
     parser.add_argument('-dm', type=int, default=1,
                         help='1: distributed memory’ (PV-DM) is used.'

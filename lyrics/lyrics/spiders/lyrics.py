@@ -94,22 +94,17 @@ class wang(scrapy.Spider):
 
     def parse_getlyrics(self,response):
         item = response.meta['item']
-        content = ''
         print response
-#'//*[@id="Tb3"]/table[2]/tbody[1]/tr[2]/td[1]/div[2]/table[1]/tbody[1]/tr[1]/td[1]/div[1]/dl[2]/dd[1]'
         c_list = "".join(response.selector.xpath('//*[@id="fsZx3"]').extract())
         doc = html.document_fromstring(c_list)
         for i in doc.xpath("*//br"):
             i.tail = "\n"+i.tail if i.tail else "\n"
             s = i.tail.encode('utf-8')
-                #if s.find('更多更詳盡歌詞') | s.find('：') | s.find('['):
-                #     continue
-                #else :
-                #    content += s
         print doc.text_content().encode('utf-8')
-        #print doc
         item['content'] = doc.text_content().encode('utf-8')
         yield item
+
+#'//*[@id="Tb3"]/table[2]/tbody[1]/tr[2]/td[1]/div[2]/table[1]/tbody[1]/tr[1]/td[1]/div[1]/dl[2]/dd[1]'
 
 #        for i in c_list:
 #        t="".join(c_list.xpath('text()').extract()).encode('utf-8')
