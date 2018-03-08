@@ -17,6 +17,17 @@ from sklearn.preprocessing import normalize
 def try2(request):
     return render(request, 'try2.html', {'current_time': str(datetime.now()), })
 
+def test(request):
+    return render(request, 'test.html', {'current_time': str(datetime.now()), })
+
+def test2(request):
+    request.encoding = 'utf-8'
+    reply = None
+    if "text" in request.POST:  # ans['rlt']=request.POST["text"]      for line in request.POST["text"]
+        reply = request.POST["text"]
+    ans = {'input': reply}
+    ans['rlt'], ans['name'] = emotion(reply)
+    return render(request, "test.html", ans)
 """
 def comment(request):
     return render(request, 'test_comment.html', {})
@@ -52,16 +63,18 @@ def emotion(line):
 
     #punc = punc.decode("utf-8")
 
-    jieba.set_dictionary("C:/Users/user/schoolwork/dict.txt.big.txt")
+    jieba.set_dictionary("C:/Users/user/schoolwork/dict.txt.big.txt")   # JIEBA 簡體轉繁體的字典路徑
 
-    d2v_model = gensim.models.doc2vec.Doc2Vec.load("C:/Users/user/schoolwork/model/model/20171220.vec")
+    d2v_model = gensim.models.doc2vec.Doc2Vec.load("C:/Users/user/schoolwork/model/20171220.vec")
+    # model 路徑
 
     biggest = 0
     song = 0
 
     # d2v=d2v_model.docvecs
     d2v = normalize(numpy.array(d2v_model.docvecs), norm='max', axis=1, copy=True, return_norm=False)
-    www = open("C:/Users/user/schoolwork/visitor.txt", 'w')
+    song_name = open("C:/Users/user/schoolwork/song_list.txt", 'r', encoding = 'utf-8' ).readlines()
+    www = open("C:/Users/user/schoolwork/visitor.txt", 'w')    #使用者輸入字串存入的 txt 路徑
     www.write('<p> ')
     line = re.sub(r"[%s]+" % punc, "", line)  #.decode("utf-8")
     #print line
@@ -82,25 +95,28 @@ def emotion(line):
         www.write('</l> ')
     www.close()
 
-    f = open("C:/Users/user/schoolwork/visitor.txt", 'r')
+    f = open("C:/Users/user/schoolwork/visitor.txt", 'r')    #使用者輸入字串存入的 txt 路徑
 
     inputvec = d2v_model.infer_vector(f)
 
     for i in range(0, 59262):
         docvec = d2v[i]
-        inner = 0
+        """   inner = 0
         for j in range(0, 300):
             k = inputvec[j] * docvec[j]
-            inner += k
+            inner += k"""
+        inner = inputvec.dot(docvec)
         if inner > biggest:
             biggest = inner
             song = i + 1
     #print str(biggest) + '\n'
     #print str(song) + '\n'
-    mostsimilar = open( "C:/Users/user/schoolwork/lyrics/" + str(song) + '.txt','r' , encoding = 'utf-8' ).readlines()
+    mostsimilar = open( "C:/Users/user/schoolwork/lyrics/" + str(song) + '.txt','r' , encoding = 'utf-8' ).readlines()  #歌詞路徑
     mostsimilar = "".join(mostsimilar)
-    print( str(song) )
-    return mostsimilar, str(song)
+
+
+    #print(song_name[song])
+    return mostsimilar, song_name[song]
 
     #for line in mostsimilar:
     #    print line
