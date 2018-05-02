@@ -31,7 +31,6 @@ def test2(request):
     reply = None
     if "text" in request.POST:  # ans['rlt']=request.POST["text"]      for line in request.POST["text"]
         reply = request.POST["text"]
-    ans = {'input': reply}
 
 
     biggest = 0
@@ -66,5 +65,6 @@ def test2(request):
     mostsimilar = open( "C:/Users/user/schoolwork/lyrics/" + str(song+1) + '.txt','r' , encoding = 'utf-8' ).readlines()  #歌詞路徑
     mostsimilar = "".join(mostsimilar)
     result = song_name[song].split(',')
-    ans = {'rlt': mostsimilar, 'name':result[1], 'author':result[2]}
+    ans = {'input':reply, 'rlt': mostsimilar, 'name':result[1], 'author':result[2]}
     return render(request, "test.html", ans)
+
