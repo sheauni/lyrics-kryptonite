@@ -2,10 +2,6 @@
 
 <html style="height:100%;">
 <!--
-我只有幫你們改html的部分
-python的code我都先暫時刪掉了
-你們自己寫回來哦！！
-應該是有這幾個，再麻煩你們自己塞回去囉
 -------------------------
 {% load staticfiles %}
 {% csrf_token %}
@@ -13,7 +9,6 @@ python的code我都先暫時刪掉了
 {{ rlt | linebreaksbr }}
 {{ current_time }}
 -------------------------
-
 hadname online 有名線上科技
 -->
 <head>
@@ -27,7 +22,6 @@ hadname online 有名線上科技
     font-family: 'Open Sans','微軟正黑體' ,sans-serif;
     font-weight:500;
 }
-
 body{
     margin:0px;
     box-sizing: border-box;
@@ -36,7 +30,6 @@ body{
     background-color:#D9DDDD;
     overflow-y:hidden;
 }
-
 #wrapper{
     box-sizing: border-box;
     height:100%;
@@ -47,7 +40,6 @@ body{
     background-color:#EDEDED;
     overflow-y:auto;
 }
-
 p,ul,span{
     font-size:17px;
     color:#643D3B;
@@ -65,12 +57,10 @@ a:hover{
     transition-property:color;
     transition-duration:500ms;
 }
-
 hr{
     border-top:1px dashed #06C;
     width:100%;
 }
-
 h1{
     margin:5px;
     line-height:38px;
@@ -81,7 +71,6 @@ h1{
 h3{
     font-size:19px; color:#021804;
 }
-
 input[type="text"]{
     width:100%;
     max-width:250px;
@@ -93,7 +82,6 @@ input[type="text"]{
     color:#643D3B;
     border-radius:0px;
 }
-
 input[type="submit"],button{
     font-size:14px;
     height:23px;
@@ -103,7 +91,6 @@ input[type="submit"],button{
     vertical-align:middle;
     border-radius:0px;
 }
-
 textarea{
     width:100%;
     max-width:500px;
@@ -140,9 +127,8 @@ textarea{
        <input type="submit" name="SB" value="獲得推薦歌曲">
    </form>
    <br><br>
-   <p style="color:##35A7E1;">{{ name }}</p>
+   <p style="color:##35A7E1;">歌名：{{ name }} <br> 歌手：{{ author }}</p>
    <p id="lyrics" style=" color:#35A7E1; charset=utf-8 "><b>{{ rlt | linebreaksbr }}</b></p>
-   <br>
    <hr>
    <h3>使用者回覆</h3>
    <form id="feedbackForm">
