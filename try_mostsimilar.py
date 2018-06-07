@@ -74,7 +74,10 @@ with codecs.open(USER_INPUTS, 'r', encoding='utf-8') as file:  # open(USER_INPUT
                 song=i+1
         print str(biggest)+','
         #print str(song)+','
-        print song_name[song]
+        result = song_name[song].split(',')
+        print '曲名：'+result[1]
+        print '歌手：'+result[2]
+        print d2v_model.get_latest_training_loss()
         #mostsimilar=open('/Users/Nini/Desktop/schoolproject/1206_lyrics_file/GarbageRemoved/'+str(song)+'.txt','r').readlines()
         #for line in mostsimilar:
         #    print line

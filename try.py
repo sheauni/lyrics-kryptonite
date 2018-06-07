@@ -6,6 +6,8 @@ import jieba
 import numpy
 #import array
 from sklearn.preprocessing import normalize
+from random import randrange, uniform
+
 
 
 punc = "ㄅㄆㄇㄈㄉㄊㄋㄌㄍㄎㄏˇˋㄐㄑㄒㄓㄔㄕㄖˊㄗㄘㄙ˙ㄧㄨㄩㄚㄛㄜㄝㄞㄟㄠㄡㄢㄣㄤㄥㄦ\￣︶▽ρ┬σ㊣．€↑↓↘↖↗↙→┴└┌♡《□■╬﹕。┘╭╮─▃▄▅▆▇█▉▊\╩╔╥◢◣●○οO◆◇﹉☆★〉〈﹒°∴◎⊙※║══１２３４５６７８９０ａｂｃｄｅｆｇｈｉｊｋｌｍｎｏｐｑｒｓｔｕｖｗｘｙｚＱＷＥＲＴＹＵＩＯＰＬＫＪＨＧＦＤＳＡＺＸＣＶＢＮＭ0123456789！？｡＂＃＄％＆＇（）＊＋，－／：；＜＝＞＠［＼］＾＿｀｛｜｝～｟｠｢｣､、〃》「」『』【】〔〕〖〗〘〙〚〛〜〝〞〟〰〾〿–—‘’‛“”„‟…‧﹏.!!#$%&\'()*+,-./:;<=>?@[\\]^_`{|}~"
@@ -16,6 +18,8 @@ jieba.set_dictionary('/Library/Python/2.6/site-packages/jieba/dict.txt.big.txt')
 d2v_model = gensim.models.doc2vec.Doc2Vec.load('/Users/Nini/Desktop/schoolproject/1206_lyrics_file/model/20171220.vec')
 biggest=0
 song=0
+song_name = open('/Users/Nini/Desktop/schoolproject/1206_lyrics_file/song_list.txt','r').readlines()
+
 
 #d2v=d2v_model.docvecs
 d2v=normalize(numpy.array(d2v_model.docvecs),norm='max',axis=1,copy=True, return_norm=False)
@@ -42,24 +46,32 @@ else:
 www.close()
 
 f=open('/Users/Nini/Desktop/schoolproject/LyricsFile22124/say.txt','r')
-print d2v_model.docvecs.most_similar(f)
+#print d2v_model.docvecs.most_similar(f)
 inputvec = d2v_model.infer_vector(f)
 
-for i in range(0,59262):
+for i in range(0, 59262):
     docvec = d2v[i]
-    '''
-    for j in range(0,300):
-        k=inputvec[j]*docvec[j]
-        inner+=k
-    '''
     inner = inputvec.dot(docvec)
-    if inner>biggest:
-        biggest=inner
-        song=i+1
+    if inner > biggest:
+        biggest = inner
+        song = i + 1
+
 print str(biggest)+'\n'
 print str(song)+'\n'
+result = song_name[song-1].split(',')
+print '曲名：'+result[1]
+print '歌手：'+result[2]
 mostsimilar=open('/Users/Nini/Desktop/schoolproject/1206_lyrics_file/GarbageRemoved/'+str(song)+'.txt','r').readlines()
 for line in mostsimilar:
     print line
-print d2v_model.docvecs[song-1]
+
+rand = randrange(1, 59263)
+print str(rand)+'\n'
+resul = song_name[rand-1].split(',')
+print '曲名：'+resul[1]
+print '歌手：'+resul[2]
+mostsimila=open('/Users/Nini/Desktop/schoolproject/1206_lyrics_file/GarbageRemoved/'+str(rand)+'.txt','r').readlines()
+for line in mostsimila:
+    print line
+#print d2v_model.docvecs[song-1]
 
