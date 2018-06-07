@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+
+<html style="height:100%;">
+<!--
+我只有幫你們改html的部分
+python的code我都先暫時刪掉了
+你們自己寫回來哦！！
+應該是有這幾個，再麻煩你們自己塞回去囉
+-------------------------
+{% load staticfiles %}
+{% csrf_token %}
+{{ num }}
+{{ rlt | linebreaksbr }}
+{{ current_time }}
+-------------------------
+
+hadname online 有名線上科技
+-->
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8"/>
+    <title>Lyrics!!!</title>
+</head>
+<style>
+@import url(https://fonts.googleapis.com/css?family=Open+Sans);
+*{
+    font-family: 'Open Sans','微軟正黑體' ,sans-serif;
+    font-weight:500;
+}
+
+body{
+    margin:0px;
+    box-sizing: border-box;
+    padding:0px;
+    height:100%;
+    background-color:#D9DDDD;
+    overflow-y:hidden;
+}
+
+#wrapper{
+    box-sizing: border-box;
+    height:100%;
+    width:100%;
+    max-width:800px;
+    margin:0px auto;
+    padding:5px 10px 0px;
+    background-color:#EDEDED;
+    overflow-y:auto;
+}
+
+p,ul,span{
+    font-size:17px;
+    color:#643D3B;
+}
+a{text-decoration:none;}
+a:hover{
+    border-bottom:1px dashed #1a2e36;
+    color:#1a2e36;
+    -moz-transition-property:color;
+    -moz-transition-duration:500ms;
+    -webkit-transition-property:color;
+    -webkit-transition-duration:500ms;
+    -o-transition-property:color;
+    -o-transition-duration:500ms;
+    transition-property:color;
+    transition-duration:500ms;
+}
+
+hr{
+    border-top:1px dashed #06C;
+    width:100%;
+}
+
+h1{
+    margin:5px;
+    line-height:38px;
+    font-size:28px;
+    color:#0A2A12;
+    text-align:center;
+}
+h3{
+    font-size:19px; color:#021804;
+}
+
+input[type="text"]{
+    width:100%;
+    max-width:250px;
+    border:1px solid #5A7E41;
+    padding:2px 3px;
+    font-size:14px;
+    vertical-align:middle;
+    background-color:transparent;
+    color:#643D3B;
+    border-radius:0px;
+}
+
+input[type="submit"],button{
+    font-size:14px;
+    height:23px;
+    border:1px solid #5A7E41;
+    background-color:#5A7E41;
+    color:#fff;
+    vertical-align:middle;
+    border-radius:0px;
+}
+
+textarea{
+    width:100%;
+    max-width:500px;
+    font-size:14px;
+    border:1px solid #5A7E41;
+    resize:vertical;
+    background-color:transparent;
+    color:#643D3B;
+    border-radius:0px;
+}
+#radio-group{
+    margin:0px;
+    padding:0px;
+    display:block;
+}
+#radio-group li{
+    display:inline;
+    margin-right:5px;
+}
+#radio-group li input{
+    margin-right:5px;
+}
+</style>
+<!--<p><img src="https://sdl-stickershop.line.naver.jp/stickershop/v1/sticker/2905350/android/sticker.png" style=" position:absolute; width:200px; height:200px; top:150px; left:800px; "></p>-->
+<body link="#006666" vlink="#006666" alink="#006666">
+<div id="wrapper">
+   <h1>~歌詞推薦系統~</h1>
+  <form action="/test2" method="post">
+       {% csrf_token %}
+       <font  color="#643D3B">請輸入你的心情 :</font>
+      <br>
+       <textarea name="text" id="userInput" rows=2>{{ input }}</textarea>
+       <br>
+       <input type="submit" name="SB" value="獲得推薦歌曲">
+   </form>
+   <br><br>
+   <p style="color:##35A7E1;">{{ name }}</p>
+   <p id="lyrics" style=" color:#35A7E1; charset=utf-8 "><b>{{ rlt | linebreaksbr }}</b></p>
+   <br>
+   <hr>
+   <h3>使用者回覆</h3>
+   <form id="feedbackForm">
+            <p>滿意嗎？</p>
+                <ul id="radio-group">
+                    <li><input id="op1" type="radio" value="1" name="qs" />1</li>
+                    <li><input id="op2" type="radio" value="2" name="qs" />2</li>
+                    <li><input id="op3" type="radio" value="3" name="qs" />3</li>
+                    <li><input id="op4" type="radio" value="4" name="qs" />4</li>
+                    <li><input id="op5" type="radio" value="5" name="qs" />5</li>
+                </ul>
+           <p>其他意見<p>
+                <textarea id="feed" name="feed" rows=6></textarea>
+                <br><button type="submit" id="submitButton">傳送</button>
+   </form>
+   <p>前往 <a href="https://docs.google.com/spreadsheets/d/1NQea73IHOrH1moY25vYmYhFtSnKpK9Bo3B0jukDHeuc/edit#gid=0">回饋整理</a></p>
+   <script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+</div>
+
+<script>
+$('#submitButton').click( function(e) {
+    e.preventDefault();
+    console.log('hii');
+    let checked = -1;
+    for (let i = 1; i <= 5; i++) {
+      if($('input[id=op'+i+']:checked').val())
+      {
+        checked = i;
+        break;
+      }
+    }
+    $.ajax({
+        url: 'https://script.google.com/macros/s/AKfycbyYpOUErauHuIUwnIDnLZuLGeES_ajsHGxEuh_vQJoN2e63-TgN/exec',
+        type: 'post',
+        dataType: 'json',
+        data: {
+            'feed': $('#feed').val(),
+            'satisfied': checked,
+            'input': $('#userInput').val(),
+            'lyrics': $('#lyrics').html(),
+        },
+        success: function(data) {
+            alert('回覆成功！')
+            console.log('receive data:', data);
+        }
+    }).fail(function() {
+        alert('回覆失敗 QAQ')
+        console.log('Fail');
+    });
+});
+</script>
+</body>
+</html>

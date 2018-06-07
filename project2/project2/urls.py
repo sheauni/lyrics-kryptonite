@@ -15,7 +15,7 @@ Including another URLconf
 from django.conf.urls import include, url
 from django.contrib import admin
 #from trips.views import hello_world, try2, home, go, math, emotion, comment
-from trips.views import  try2, go
+from trips.views import  try2, go, test, test2
 
 urlpatterns = [
 
@@ -27,5 +27,7 @@ urlpatterns = [
 #     url(r'^comment$', comment),
 
      url(r'^try2/$', try2),
-     url(r'^go$',go),
+     url(r'^go$', go),
+     url(r'^test$', test),
+     url(r'^test2$', test2),
 ]
